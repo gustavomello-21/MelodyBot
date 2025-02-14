@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/gustavomello-21/melody-bot/internal/entities"
 	"github.com/gustavomello-21/melody-bot/internal/handlers"
 )
 
@@ -49,17 +50,22 @@ func (d *DiscordGateway) SendMessage() error {
 	return nil
 }
 
-func (d *DiscordGateway) SendEmbedMessage() error {
+func (d *DiscordGateway) SendEmbedMessage(video entities.Video) error {
 	a := discordgo.MessageEmbed{
-		Title: "alo",
-		Color: 3,
+		Title:       "Now Playing...",
+		Description: fmt.Sprintf("A música que está tocando é %s", video.Title),
+		Color:       100,
 	}
 	d.discordBotSession.ChannelMessageSendEmbed("1339093294621266033", &a)
 	fmt.Println("Sending embed message...")
 	return nil
 }
 
-func (d *DiscordGateway) EnterChannel() error {
+func (d *DiscordGateway) EnterChannel(guildId, channelId string) error {
+	_, err := d.discordBotSession.ChannelVoiceJoin(guildId, "879851686393413668", true, false)
+	if err != nil {
+		return err
+	}
 	fmt.Println("Entering channel....")
 	return nil
 }
@@ -75,6 +81,5 @@ func (d *DiscordGateway) GetMessages() error {
 }
 
 func (d *DiscordGateway) handleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
-	fmt.Println(m.Content)
 	d.CommandHandler.Handler(s, m, d.botprefix)
 }

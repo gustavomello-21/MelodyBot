@@ -1,3 +1,4 @@
 TODO:
 [] Fazer a mensagem de embed "SendEmbedMessage"
 [] Terminar o UseCase "AddMusicOnQueueUseCase"
+[] Corrigir para ele pegar o channelId do canal que o usuário estar

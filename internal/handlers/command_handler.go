@@ -44,7 +44,7 @@ func (ch *CommandHandler) Handler(s *discordgo.Session, m *discordgo.MessageCrea
 func (ch *CommandHandler) playCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	addMusicOnQueuUseCase := usecases.NewAddMusicOnQueueUseCase(ch.MusicPlayerGateway, ch.MessageAppGateway)
 
-	if err := addMusicOnQueuUseCase.Execute(); err != nil {
+	if err := addMusicOnQueuUseCase.Execute(m.GuildID, m.ChannelID); err != nil {
 		return
 	}
 }

@@ -1,15 +1,17 @@
 package gateways
 
+import "github.com/gustavomello-21/melody-bot/internal/entities"
+
 type MessageAppGateway interface {
 	Start() error
 	// SendMessage sends a message
 	SendMessage() error
 
 	// SendEmbedMessage sends an embed message
-	SendEmbedMessage() error
+	SendEmbedMessage(entities.Video) error
 
 	// Add Bot in channel
-	EnterChannel() error
+	EnterChannel(string, string) error
 
 	// Remove Bot from channel
 	LeaveChannel() error

@@ -1,6 +1,10 @@
 package usecases
 
-import "github.com/gustavomello-21/melody-bot/internal/usecases/gateways"
+import (
+	"fmt"
+
+	"github.com/gustavomello-21/melody-bot/internal/usecases/gateways"
+)
 
 type AddMusicOnQueueUseCase struct {
 	MusicPlayerGateway gateways.MusicPlayerGateway
@@ -14,7 +18,13 @@ func NewAddMusicOnQueueUseCase(musicPlayerGateway gateways.MusicPlayerGateway, m
 	}
 }
 
-func (a *AddMusicOnQueueUseCase) Execute() error {
+func (a *AddMusicOnQueueUseCase) Execute(guildId, channelId string) error {
+	err := a.MessageAppGateway.EnterChannel(guildId, channelId)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
 	video, err := a.MusicPlayerGateway.SearchMusic()
 	if err != nil {
 		return err
@@ -25,7 +35,7 @@ func (a *AddMusicOnQueueUseCase) Execute() error {
 		return err
 	}
 
-	err = a.MessageAppGateway.SendEmbedMessage()
+	err = a.MessageAppGateway.SendEmbedMessage(*video)
 	if err != nil {
 		return err
 	}
