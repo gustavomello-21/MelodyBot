@@ -1,16 +1,16 @@
 package usecases
 
-import (
-	"github.com/gustavomello-21/melody-bot/internal/usecases/gateways"
-)
+import "github.com/gustavomello-21/melody-bot/internal/usecases/gateways"
 
 type AddMusicOnQueueUseCase struct {
 	MusicPlayerGateway gateways.MusicPlayerGateway
+	MessageAppGateway  gateways.MessageAppGateway
 }
 
-func NewAddMusicOnQueueUseCase(musicPlayerGateway gateways.MusicPlayerGateway) *AddMusicOnQueueUseCase {
+func NewAddMusicOnQueueUseCase(musicPlayerGateway gateways.MusicPlayerGateway, messageAppGateway gateways.MessageAppGateway) *AddMusicOnQueueUseCase {
 	return &AddMusicOnQueueUseCase{
 		MusicPlayerGateway: musicPlayerGateway,
+		MessageAppGateway:  messageAppGateway,
 	}
 }
 
@@ -20,7 +20,12 @@ func (a *AddMusicOnQueueUseCase) Execute() error {
 		return err
 	}
 
-	err = a.MusicPlayerGateway.AddMusic(video)
+	err = a.MusicPlayerGateway.AddMusic(*video)
+	if err != nil {
+		return err
+	}
+
+	err = a.MessageAppGateway.SendEmbedMessage()
 	if err != nil {
 		return err
 	}

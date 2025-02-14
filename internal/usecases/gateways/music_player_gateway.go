@@ -4,7 +4,7 @@ import "github.com/gustavomello-21/melody-bot/internal/entities"
 
 type MusicPlayerGateway interface {
 	// SearchMusic searches for a music
-	SearchMusic() (entities.Video, error)
+	SearchMusic() (*entities.Video, error)
 
 	// GetMusics returns a list of music
 	GetMusics() ([]entities.Video, error)
